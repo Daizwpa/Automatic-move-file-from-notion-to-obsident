@@ -11,7 +11,7 @@ def CheckAndCreateDirectory(path):
 
 def PrepareFileName(unappropriateName):
 
-    for chart in ["?", ":", "/"]:
+    for chart in ["?", ":", "/", '"']:
         unappropriateName = unappropriateName.replace(chart, "")
     return unappropriateName + ".md"
 
@@ -31,20 +31,31 @@ def fix_file(path):
     try:
         assert os.path.exists(path=path)
 
-        with open(path, mode="r") as file:
+        with open(path, mode="r",  encoding="utf8") as file:
             x = file.readline()
             x = x.removeprefix("#")
             NewFileName = x.strip()
-            print(x)
+
         NewFileName = PrepareFileName(NewFileName)
         newFullPath = GetNewfullPath(path, NewFileName)
 
         shutil.move(path, newFullPath)
 
         print("Move " + path + " to " + newFullPath + " Done")
-    except:
-        print("Failed to move " + path)
+    except Exception as e:
+        print("Failed to move: " + path)
+        print(e)
 
 
-fix_file(
-    "C:/Users/User/Desktop/data/[18F]FDG-PET CT texture analysis in thyroid incide 715d7050c5664c1aa7b65f431871ed72.md")
+def Add_yaml_to_file(filePath):
+    try:
+        shutil.move(filePath, filePath+"~")
+        destination = open(filePath, mode="w", encoding="UTF8")
+        source = open(filePath, mode="r", encoding="UTF8")
+        destination.
+    except Exception as e:
+        print(e)
+    finally:
+        if destination != None:
+            destination.close()
+            source.close()
