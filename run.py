@@ -1,7 +1,7 @@
 
 import os
 import argparse
-from Core import fix_file
+from Core import FixFile
 
 
 if __name__ == "__main__":
@@ -16,5 +16,4 @@ if __name__ == "__main__":
         name, extension = os.path.splitext(fname)
         if extension != ".md":
             continue
-
-        fix_file(os.path.join(directoryFile, fname))
+        FixFile(os.path.join(directoryFile, fname))
