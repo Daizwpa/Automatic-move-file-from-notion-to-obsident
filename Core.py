@@ -29,11 +29,12 @@ def editlines(lines):
     NameFile = lines[0].removeprefix("#")
     NameFile = NameFile.strip()
     lines[0] = "---\n"
-    lines[1] = "Title: " + NameFile + "\n"
+    lines[1] = 'Title: "' + NameFile + '"\n'
     for i, line in enumerate(lines):
-        if line == "\n":
+        if line == "\n" or len(lines) == i+1:
             lines[i] = "---\n"
             break
+
     return lines
 
 
