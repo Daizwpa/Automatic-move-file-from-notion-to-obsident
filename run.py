@@ -1,7 +1,7 @@
 
 import os
 import argparse
-from Core import move_file, AddYamlToFile, is_file_dotMD, get_title_in_file, Look_into_Json_for, DefineNewFullPath, get_metadata_in_md, readNoteContent, get_note_in_md
+from Core import is_file_dotMD, get_title_in_file, Look_into_Json_for, get_metadata_in_md, readNoteContent, get_note_in_md, make_Md_file
 
 
 if __name__ == "__main__":
@@ -36,7 +36,8 @@ if __name__ == "__main__":
             md_metadata = get_metadata_in_md(md_file)
 
             md_note = get_note_in_md(md_file)
-            
+
+            make_Md_file(matrial=matrial, metadata=md_metadata, note=md_note)
 
         for name_files in not_found:
             print(name_files)

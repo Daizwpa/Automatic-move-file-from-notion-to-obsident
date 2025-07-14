@@ -121,3 +121,16 @@ def get_note_in_md(md_file_liens):
         return lines[i:]
     except:
         raise
+
+def make_Md_file(matrial, metadata, note):
+    with open(f'./done/@{matrial["id"]}.md', 'w') as md_file:
+        # Write a main header
+        md_file.write(f'# @{matrial["id"]}\n\n')
+        
+        # Write meta data
+        md_file.write('---\n')
+        md_file.write('This is an example of a Markdown file created using Python.\n')
+        md_file.write('---\n\n')
+        for line in note:
+            md_file.write(line)
+    print("Markdown file 'my_document.md' created successfully.")
