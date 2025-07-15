@@ -142,6 +142,8 @@ def make_Md_file(matrial, metadata, note):
             md_file.write(f'tags: [{metadata.get("Task", "")}]\n')
             md_file.write(f'DataType: [{metadata.get("Data type", "")}]\n')
             md_file.write(f"Data Region: [{metadata.get('Data Region', '')}]\n")
+            md_file.write(f"Muti-central Data: [{metadata.get('Muti-central Data', '')}]\n")
+            md_file.write(f"Mentioned: [{metadata.get('Mentioned', '')}]\n")
             md_file.write('---\n\n')
             
             keys_to_write = [
@@ -155,14 +157,12 @@ def make_Md_file(matrial, metadata, note):
             "Method",
             "Pre-processing",
             "Limitation",
-            "Muti-central Data",
             "Number Of Patient",
             "Explainability",
             "Features selection",
             "Optimization",
             "Transfer learning",
             "list of features",
-            "Mentioned",
             "Multimodal",
             "list of features"]
             
@@ -190,8 +190,7 @@ def add_author_to_file(file, author):
     
 def add_to_file_if_exist(file, metadata, key):
     if metadata.get(key) != None:
-        file.write(f'{key}\n')
-        file.write(f'{metadata.get(key)}\n')
+        file.write(f'{key}: {metadata.get(key)}\n')
         
 def get_type_of_reference(matrial, metadata):
     if matrial.get("container-title"):
