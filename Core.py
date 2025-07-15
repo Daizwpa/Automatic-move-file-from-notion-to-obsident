@@ -123,14 +123,87 @@ def get_note_in_md(md_file_liens):
         raise
 
 def make_Md_file(matrial, metadata, note):
-    with open(f'./done/@{matrial["id"]}.md', 'w') as md_file:
-        # Write a main header
-        md_file.write(f'# @{matrial["id"]}\n\n')
+    try:
+        with open(f'./done/@{matrial["id"]}.md', 'w', encoding="UTF8") as md_file:
+            # Write a main header
+            # Write meta data
+            md_file.write('---\n')
+            md_file.write(f'title: "{matrial["title"]}"\n')
+            add_author_to_file(md_file, matrial.get("author", []))
+            md_file.write(f'year: {get_type_of_year(matrial)}\n')
+            md_file.write(f'container-title: "{get_type_of_reference(matrial, metadata)}"\n')
+            md_file.write(f'type: {matrial.get("type", "")}\n')
+            md_file.write(f'DOI: {matrial.get("DOI", "")}\n')
+            md_file.write(f'study-type: {metadata.get("Type of paper", "")}\n')
+            md_file.write(f'Status: {metadata.get("Status", "").replace(" ", "_")}\n')
+            md_file.write(f'Score: {metadata.get("Score", "TBD")}\n')
+            md_file.write(f'Dataset: "{metadata.get("DataSet", "")}"\n')
+            md_file.write(f'keyword: [{metadata.get("Key word", "")}]\n')
+            md_file.write(f'tags: [{metadata.get("Task", "")}]\n')
+            md_file.write(f'DataType: [{metadata.get("Data type", "")}]\n')
+            md_file.write(f"Data Region: [{metadata.get('Data Region', '')}]\n")
+            md_file.write('---\n\n')
+            
+            keys_to_write = [
+            "Tool used",
+            "Accuracy on test",
+            "Specificity on test",
+            "Sensitivity on test",
+            "AUC on test",
+            "Limitation",
+            "Output",
+            "Method",
+            "Pre-processing",
+            "Limitation",
+            "Muti-central Data",
+            "Number Of Patient",
+            "Explainability",
+            "Features selection",
+            "Optimization",
+            "Transfer learning",
+            "list of features",
+            "Mentioned",
+            "Multimodal",
+            "list of features"]
+            
+            for key in keys_to_write:
+                add_to_file_if_exist(md_file, metadata, key)
+            
+            if note == []:
+                md_file.write("No note content available.\n")
+            else:
+                for line in note:
+                    md_file.write(line)
+            
+        print("Markdown file 'my_document.md' created successfully.")
+    
+    except:
+        print("Error creating markdown file.")
+        raise
+
+def add_author_to_file(file, author):
+    author_str = "authors:"
+    for author in author:
+        author_str += f' {author.get("family", "")} {author.get("given", "")},'
+    author_str = author_str.rstrip(',')
+    file.write(f'{author_str}\n')
+    
+def add_to_file_if_exist(file, metadata, key):
+    if metadata.get(key) != None:
+        file.write(f'{key}\n')
+        file.write(f'{metadata.get(key)}\n')
         
-        # Write meta data
-        md_file.write('---\n')
-        md_file.write('This is an example of a Markdown file created using Python.\n')
-        md_file.write('---\n\n')
-        for line in note:
-            md_file.write(line)
-    print("Markdown file 'my_document.md' created successfully.")
+def get_type_of_reference(matrial, metadata):
+    if matrial.get("container-title"):
+        return matrial.get("container-title")
+    if metadata.get("Type"):
+        return metadata.get("Type")
+    return "Unknown"
+
+def get_type_of_year(matrial):
+    #matrial["issued"]["date-parts"][0][0]
+    if matrial.get("issued"):
+        return matrial["issued"]["date-parts"][0][0]
+    if matrial.get("volume"):
+        return matrial.get("volume")
+    return ""
